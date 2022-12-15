@@ -19,14 +19,20 @@ const deleteProduct = async (id) => {
 }
 
 const bookmarkProduct = async (id) => {
-    try {
-        let prod = await productModel.findByIdAndUpdate(id,{bookmarked:true},{new:true});
-        console.log(prod)
-        return prod
-    } catch (error) {
-        throw new Error("Failed to update in Database!");
-    }
-}
+  try {
+    let currentProd = await productModel.findById(id);
+
+    let prod = await productModel.findByIdAndUpdate(
+      id,
+      { bookmarked: !currentProd.bookmarked },
+      { new: true }
+    );
+    // console.log(prod);
+    return prod;
+  } catch (error) {
+    throw new Error("Failed to update in Database!");
+  }
+};
 
 const getAllProducts = async () => {
     let prods = await productModel.find({});
