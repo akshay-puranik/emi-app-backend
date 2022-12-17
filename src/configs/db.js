@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 
-const connection = mongoose.connect(
-  "mongodb+srv://dbAdmin:dbAdmin@cluster0.zng1zvv.mongodb.net/shopping-list"
-);
+const dbConnect = () => {
+    mongoose.connect(
+      "mongodb+srv://dbAdmin:dbAdmin@cluster0.zng1zvv.mongodb.net/mock-12"
+    );
+}
 
-module.exports = { connection };
+module.exports = dbConnect;

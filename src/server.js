@@ -1,23 +1,20 @@
 const express = require("express");
-const { connection } = require("./configs/db");
-const PORT = process.env.PORT || 8080;
+const dbConnect = require("./configs/db");
+const jobRoute = require("./routes/job.routes");
+
 const app = express();
-const cors = require("cors");
-const productRoute = require("./routes/product.routes");
-
 app.use(express.json());
-app.use(cors());
 
-app.use("/product",productRoute)
+app.use("/job",jobRoute);
 
-app.get("/", (req, res) => res.send("Hello world"));
+app.get("/", (req, res) => res.send("mock-12 Backend"));
 
-app.listen(PORT, async () => {
+app.listen(8080, async () => {
   try {
-    await connection;
+    await dbConnect();
   } catch (error) {
-    console.log("Error connecting to Database");
+    console.log("Error Connecting to Database!");
   }
-
+  
   console.log("Server running at http://localhost:8080");
 });
