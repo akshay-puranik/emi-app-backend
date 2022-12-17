@@ -3,6 +3,8 @@ const dbConnect = require("./configs/db");
 const jobRoute = require("./routes/job.routes");
 const cors = require("cors");
 
+const PORT = process.env.PORT || 8080
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -11,7 +13,7 @@ app.use("/job",jobRoute);
 
 app.get("/", (req, res) => res.send("mock-12 Backend"));
 
-app.listen(8080, async () => {
+app.listen(PORT, async () => {
   try {
     await dbConnect();
   } catch (error) {
