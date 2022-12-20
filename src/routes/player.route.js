@@ -20,8 +20,8 @@ playerRoute.post("/", async (req, res) => {
   }
 
   try {
-    await playerModel.create(req.body);
-    return res.status(200).send("Player Added!");
+    let newPlayer = await playerModel.create(req.body);
+    return res.status(200).send(newPlayer);
   } catch (error) {
     return res.status(400).send("Unable to add player to db!");
   }
