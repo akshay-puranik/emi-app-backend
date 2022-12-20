@@ -1,17 +1,18 @@
 const express = require("express");
 const dbConnect = require("./configs/db");
-const jobRoute = require("./routes/job.routes");
 const cors = require("cors");
-
-const PORT = process.env.PORT || 8080
+const playerRoute = require("./routes/player.route");
+const wordRoute = require("./routes/word.route");
+const PORT = process.env.PORT || 8080;
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/job",jobRoute);
+app.use("/player",playerRoute);
+app.use("/word",wordRoute);
 
-app.get("/", (req, res) => res.send("mock-12 Backend"));
+app.get("/", (req, res) => res.send("word-game backend"));
 
 app.listen(PORT, async () => {
   try {
