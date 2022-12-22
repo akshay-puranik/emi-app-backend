@@ -1,25 +1,38 @@
 const express = require("express");
-const dbConnect = require("./configs/db");
-const cors = require("cors");
-const playerRoute = require("./routes/player.route");
-const wordRoute = require("./routes/word.route");
 const PORT = process.env.PORT || 8080;
+const cors = require("cors");
+const { connection } = require("./configs/db");
+const questionModel = require("./models/question.model");
 
 const app = express();
-app.use(cors());
+
 app.use(express.json());
+app.use(cors());
 
-app.use("/player",playerRoute);
-app.use("/word",wordRoute);
+app.get("/", async (req, res) => {
+  const { category, difficulty, noquestions } = req.query;
 
-app.get("/", (req, res) => res.send("word-game backend"));
+  try {
+    let arr = await await questionModel.find({
+      category: category,
+      difficulty: difficulty,
+    });
+
+    arr.splice(
+      arr.length - noquestions > 0 ? arr.length - noquestions : arr.length
+    );
+
+    return res.status(200).send(arr);
+  } catch (error) {
+    return res.status(400).send("Something went wrong!");
+  }
+});
 
 app.listen(PORT, async () => {
   try {
-    await dbConnect();
+    await connection();
   } catch (error) {
-    console.log("Error Connecting to Database!");
+    console.log("Error connecting to db!");
   }
-  
   console.log("Server running at http://localhost:8080");
 });
