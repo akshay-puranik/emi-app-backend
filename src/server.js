@@ -18,7 +18,7 @@ app.get("/", async (req, res) => {
       difficulty: difficulty,
     });
 
-    arr.splice(
+    arr = arr.splice(
       arr.length - noquestions > 0 ? arr.length - noquestions : arr.length
     );
 
