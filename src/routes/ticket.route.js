@@ -6,8 +6,15 @@ const ticketRoute = express.Router();
 
 ticketRoute.use(authMiddleware);
 
-ticketRoute.get("/", (req, res) => {
-  return res.send("here");
+
+ticketRoute.get("/", async (req, res) => {
+  let {author} = req.body;
+  try {
+    let data = await ticketModel.find({author});
+    res.status(400).send(data)
+  } catch (error) {
+    
+  }
 });
 
 ticketRoute.post("/create", async (req, res) => {
