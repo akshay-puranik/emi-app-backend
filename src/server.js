@@ -1,38 +1,27 @@
 const express = require("express");
-const PORT = process.env.PORT || 8080;
 const cors = require("cors");
-const { connection } = require("./configs/db");
-const questionModel = require("./models/question.model");
+const connection = require("./configs/db");
+const userRoute = require("./routes/user.route");
+const ticketRoute = require("./routes/ticket.route");
+const PORT = process.env.PORT || 8080;
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
-app.get("/", async (req, res) => {
-  const { category, difficulty, noquestions } = req.query;
+app.use("/user",userRoute);
+app.use("/ticket",ticketRoute);
 
-  try {
-    let arr = await await questionModel.find({
-      category: category,
-      difficulty: difficulty,
-    });
 
-    arr = arr.splice(
-      arr.length - noquestions > 0 ? arr.length - noquestions : arr.length
-    );
-
-    return res.status(200).send(arr);
-  } catch (error) {
-    return res.status(400).send("Something went wrong!");
-  }
-});
+app.get("/", (req, res) => res.send("Hello world"));
 
 app.listen(PORT, async () => {
   try {
     await connection();
+    console.log("connected to db");
   } catch (error) {
-    console.log("Error connecting to db!");
+    console.log("Error connecting to db");
   }
   console.log("Server running at http://localhost:8080");
 });
