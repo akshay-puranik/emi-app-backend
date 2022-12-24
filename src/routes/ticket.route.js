@@ -1,23 +1,23 @@
 const express = require("express");
 const { createTicket } = require("../controllers/ticket.controllers");
 const authMiddleware = require("../middlewares/auth.middleware");
+const ticketModel = require("../models/ticket.model");
 
 const ticketRoute = express.Router();
 
 ticketRoute.use(authMiddleware);
 
-
 ticketRoute.get("/", async (req, res) => {
-  let {author} = req.body;
+  let { author } = req.body;
   try {
-    let data = await ticketModel.find({author});
-    res.status(400).send(data)
+    let data = await ticketModel.find({ author });
+    return res.status(400).send(data);
   } catch (error) {
-    
+    return res.status(400).send("Something Went Wrong");
   }
 });
 
-ticketRoute.post("/create", async (req, res) => {
+ticketRoute.post("/", async (req, res) => {
   const { category, title, message } = req.body;
 
   if (!category || !title || !message) {
@@ -26,7 +26,7 @@ ticketRoute.post("/create", async (req, res) => {
 
   try {
     let ticket = await createTicket(req.body);
-    console.log(ticket)
+    console.log(ticket);
     return res
       .status(200)
       .send({ message: "Ticket created Successfully!", data: ticket });
